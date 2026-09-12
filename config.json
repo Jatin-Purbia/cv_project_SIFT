@@ -1,0 +1,21 @@
+{
+  "template": "assets/template.jpeg",
+  "scene": "assets/scene.jpeg",
+  "template_roi": [592, 306, 241, 560],
+  "output": "outputs",
+  "ratio": 0.78,
+  "sift_contrast": 0.025,
+  "hough_position_bin": 70.0,
+  "hough_log_scale_bin": 0.4,
+  "hough_angle_bins": 12,
+  "min_cluster_votes": 3,
+  "ransac_iterations": 1200,
+  "reprojection_threshold": 5.0,
+  "min_inliers": 8,
+  "min_coverage": 0.025,
+  "min_scale": 0.15,
+  "max_scale": 3.0,
+  "max_anisotropy": 3.0,
+  "nms_iou": 0.45,
+  "seed": 7
+}
