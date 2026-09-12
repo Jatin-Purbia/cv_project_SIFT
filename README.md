@@ -17,7 +17,15 @@ python -m unittest discover -s tests -v
 The supplied configuration detects **three cartons** in `assets/scene.jpeg`.
 The original photographs are preserved in `assets/`.
 
-![Final detections](outputs/detections.jpg)
+## Detection result
+
+The image below shows the three detected milk cartons with their estimated boundaries.
+
+Image path: `outputs/detections.jpg`
+
+![Three detected milk cartons in the cluttered scene](outputs/detections.jpg)
+
+[Open the full-size detection image](outputs/detections.jpg)
 
 ## Files
 
