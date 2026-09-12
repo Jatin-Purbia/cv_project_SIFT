@@ -4,20 +4,110 @@ Find repeated copies of a printed milk carton in a cluttered photograph. OpenCV
 provides SIFT, image loading, and drawing; NumPy implements the rest of the
 pipeline. No model training or external downloads are needed.
 
-## Run
+## How to run the pipeline (Windows PowerShell)
 
-From this directory, using Python 3.10 or newer:
+### 1. Open the project folder
+
+Open PowerShell and change to the folder containing `run_pipeline.py` and
+`config.json`:
 
 ```powershell
-python -m pip install -r requirements.txt
-python run_pipeline.py
-python -m unittest discover -s tests -v
+cd "C:\Desktop\CV_Project"
 ```
 
-The supplied configuration detects **three cartons** in `assets/scene.jpeg`.
-The original photographs are preserved in `assets/`.
+If you saved the project elsewhere, replace the path with your project folder.
+Run all commands below from this folder.
 
-## Detection result
+### 2. Check Python
+
+Python **3.10 or newer** is required. Check your installed version:
+
+```powershell
+python --version
+```
+
+If `python` is not recognized, install Python and enable its **Add Python to
+PATH** option, then reopen PowerShell.
+
+### 3. Create an environment and install dependencies (first run only)
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+```
+
+This installs NumPy and OpenCV in the project's `.venv` folder. The commands
+below use that environment directly, so no activation command is needed.
+Internet access is needed to download dependencies on the first installation.
+
+### 4. Check the input images and run
+
+The supplied images should be at:
+
+```text
+assets/
+  template.jpeg
+  scene.jpeg
+```
+
+The default `config.json` already contains their paths and the template crop.
+Run:
+
+```powershell
+.\.venv\Scripts\python.exe run_pipeline.py --config config.json
+```
+
+Wait for the terminal to print the detection count and output folder. With the
+supplied photographs, the reference run detects **three cartons**. It also
+prints the feature counts, supporting inliers, and alignment error for each
+detection. The original photographs are preserved.
+
+### 5. View the results
+
+The pipeline creates `outputs/` automatically. Open the final detection image:
+
+```powershell
+Invoke-Item .\outputs\detections.jpg
+```
+
+The main output files are:
+
+- `outputs/detections.jpg`: the scene with a boundary around each detected carton.
+- `outputs/naive_matches.jpg`: tentative feature matches before geometric verification.
+- `outputs/template_crop.jpg`: the cropped template used by the pipeline.
+- `outputs/results.json`: detection statistics, transformations, and run settings.
+
+To run again, repeat step 4. Files in the chosen output folder are overwritten.
+
+### Optional: run the automated tests
+
+Tests are separate from running the image pipeline:
+
+```powershell
+.\.venv\Scripts\python.exe -m unittest discover -s tests -v
+```
+
+A successful run ends with `Ran 7 tests` and `OK`.
+
+## Input images and detection result
+
+### 1. Template image
+
+The isolated milk carton used as the reference object.
+
+Image path: `assets/template.jpeg`
+
+![Original template photograph of the milk carton](assets/template.jpeg)
+
+### 2. Scene image
+
+The cluttered photograph containing three partly occluded milk cartons.
+
+Image path: `assets/scene.jpeg`
+
+![Original scene photograph containing three milk cartons](assets/scene.jpeg)
+
+### 3. Final detections
 
 The image below shows the three detected milk cartons with their estimated boundaries.
 
@@ -44,13 +134,21 @@ Image path: `outputs/detections.jpg`
 ## Using different photographs
 
 ```powershell
-python run_pipeline.py --template path/to/template.jpg --scene path/to/scene.jpg --roi 100 120 250 500 --output outputs/new_scene
+.\.venv\Scripts\python.exe run_pipeline.py --template "path/to/template.jpg" --scene "path/to/scene.jpg" --roi 100 120 250 500 --output outputs/new_scene
 ```
 
 `--roi X Y W H` selects the object in the original template photograph. For an
 already tightly cropped template, use `--full-template`. When overriding the
 template, also override or disable the sample-specific ROI. No scene locations
 or expected object count are provided to the detector.
+
+For example, with a tightly cropped template:
+
+```powershell
+.\.venv\Scripts\python.exe run_pipeline.py --template "path/to/cropped_template.jpg" --scene "path/to/scene.jpg" --full-template --output outputs/new_scene
+```
+
+Replace the example image paths and crop coordinates with your own values.
 
 Paths inside a configuration are relative to that configuration's directory.
 CLI path overrides are relative to the working directory. Both photographs run
