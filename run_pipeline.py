@@ -108,9 +108,6 @@ def main():
         'versions': {'opencv': cv2.__version__, 'numpy': np.__version__},
     }
     (output / 'results.json').write_text(json.dumps(results, indent=2), encoding='utf-8')
-    np.savez_compressed(output / 'correspondences.npz', scene_indices=matches.scene,
-                        template_indices=matches.template, ratios=matches.ratios, distances=matches.distances,
-                        source_points=tf.points[matches.template], target_points=sf.points[matches.scene])
     print(f'SIFT: {len(tf.points)} template / {len(sf.points)} scene; {len(matches.scene)} ratio-test matches')
     for record in records:
         print(f"Object {record['id']}: {record['inlier_count']} inliers, median error {record['median_error']:.2f}px, coverage {record['coverage']:.1%}")

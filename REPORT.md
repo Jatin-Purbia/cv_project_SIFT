@@ -106,6 +106,11 @@ another occluder. It is not a segmentation of just the visible pixels.
 The reference run used Python 3.12.4, OpenCV 4.12.0, and NumPy 1.26.4. It extracted
 **1,078 template keypoints**, **6,592 scene keypoints**, and **768 tentative
 matches**. Three detections passed verification and three remained after NMS.
+NMS therefore removed **zero detections in this photograph**; the photograph
+does not demonstrate its duplicate-suppression behavior. The separate
+`test_polygon_iou_and_nms` test supplies two overlapping predictions with 10
+and 8 inliers plus a distant prediction with 9 inliers. It verifies that NMS
+removes the weaker overlapping prediction and keeps both distinct objects.
 
 | Detection | Scene location / color | Independent inliers | Median error | RMSE | Template support hull |
 | --- | --- | ---: | ---: | ---: | ---: |
@@ -159,5 +164,4 @@ python -m unittest discover -s tests -v
 Submit `assets/`, the Python source, `config.json`, `requirements.txt`, this
 report, and `outputs/`. Per-detection transforms, original match indices,
 unclipped corners, and diagnostic extraction rounds are available in
-`outputs/results.json`; all tentative correspondences are saved in
-`outputs/correspondences.npz`.
+`outputs/results.json`.

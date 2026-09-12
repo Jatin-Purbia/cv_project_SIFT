@@ -32,7 +32,6 @@ The original photographs are preserved in `assets/`.
 | `outputs/naive_matches.jpg` | Up to 160 tentative correspondences, before geometry |
 | `outputs/template_crop.jpg` | Template used for feature extraction |
 | `outputs/results.json` | Affines, corners, support, errors, configuration, timing, and extraction diagnostics |
-| `outputs/correspondences.npz` | Every tentative correspondence with points, indices, distances, and ratios |
 
 ## Using different photographs
 
