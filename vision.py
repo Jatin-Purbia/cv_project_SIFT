@@ -1,6 +1,5 @@
 """From-scratch matching, 4D voting, affine RANSAC, and polygon NMS.
 
-OpenCV is used only by the runner for image I/O, SIFT, and drawing.
 Coordinates are (x, y); affine matrices are 2 x 3, mapping template to scene.
 """
 from dataclasses import dataclass
