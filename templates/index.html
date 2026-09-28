@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ObjectScope — find an object in a scene</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<div class="bg-glow" aria-hidden="true">
+  <span class="blob blob-a"></span>
+  <span class="blob blob-b"></span>
+  <span class="grid-overlay"></span>
+</div>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark">◎</span>
+    <span class="brand-name">ObjectScope</span>
+  </div>
+  <span class="brand-tag">SIFT + Hough voting + affine RANSAC, no training</span>
+</header>
+
+<main class="stage">
+  <section class="intro">
+    <h1>Find every copy of an object in a photo</h1>
+    <p>Upload a clean picture of the object, then a photo of the room or scene. The pipeline extracts SIFT features, matches them, votes for object clusters, and verifies each one geometrically.</p>
+  </section>
+
+  <section class="uploader" id="uploader">
+    <div class="dropzone" id="dz-template" data-kind="template">
+      <input type="file" id="in-template" accept="image/*" hidden>
+      <div class="dz-empty">
+        <div class="dz-icon">🎯</div>
+        <p class="dz-title">Object to find</p>
+        <p class="dz-sub">Drag & drop or click — a clear, cropped photo works best</p>
+      </div>
+      <img class="dz-preview" alt="">
+      <button type="button" class="dz-remove" aria-label="Remove image">✕</button>
+    </div>
+
+    <div class="uploader-link" aria-hidden="true">
+      <svg width="40" height="24" viewBox="0 0 40 24"><path d="M2 12h32M26 4l8 8-8 8" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+
+    <div class="dropzone" id="dz-scene" data-kind="scene">
+      <input type="file" id="in-scene" accept="image/*" hidden>
+      <div class="dz-empty">
+        <div class="dz-icon">🖼️</div>
+        <p class="dz-title">Scene / room photo</p>
+        <p class="dz-sub">Drag & drop or click — the cluttered photo to search</p>
+      </div>
+      <img class="dz-preview" alt="">
+      <button type="button" class="dz-remove" aria-label="Remove image">✕</button>
+    </div>
+  </section>
+
+  <section class="actions">
+    <button id="btn-run" class="btn-run" disabled>
+      <span class="btn-label">Find object</span>
+      <span class="btn-spinner" aria-hidden="true"></span>
+    </button>
+    <p id="form-error" class="form-error" hidden></p>
+  </section>
+
+  <section id="processing" class="processing" hidden>
+    <div class="scan-frame">
+      <img id="scan-image" alt="Scene being analyzed">
+      <span class="scan-line"></span>
+    </div>
+    <p id="stage-text" class="stage-text">Extracting SIFT features…</p>
+  </section>
+
+  <section id="results" class="results" hidden>
+    <div class="stat-row" id="stat-row"></div>
+
+    <div class="result-image-card">
+      <h2>Detections</h2>
+      <div class="image-frame">
+        <img id="result-image" alt="Scene with detected objects">
+      </div>
+      <p id="empty-note" class="empty-note" hidden>No confident match found — try a tighter crop of the object, or a scene photo with less blur/occlusion.</p>
+    </div>
+
+    <div class="object-cards" id="object-cards"></div>
+
+    <details class="raw-matches">
+      <summary>Show raw tentative matches (before geometric verification)</summary>
+      <div class="image-frame">
+        <img id="match-image" alt="Tentative feature matches">
+      </div>
+    </details>
+  </section>
+</main>
+
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
